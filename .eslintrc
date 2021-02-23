@@ -4,7 +4,6 @@
     "es6": true
   },
   "extends": [
-    "airbnb-base",
     "prettier",
     "plugin:react/recommended"
   ],

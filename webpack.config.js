@@ -111,20 +111,22 @@ module.exports = {
   },
   output: {
     filename: filename('js'),
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, 'dist'),
   },
   resolve: {
-    extensions: ['.js', '.json', '.png'],
+    extensions: ['.js', '.json', '.png', '.jsx'],
     alias: {
       '@': path.resolve(__dirname, 'src'), // '@models': path.resolve(__dirname, 'src/models'),
     }
   },
   optimization: optimization(),
   devServer: {
-    port: 4200,
+    port: 5500,
+    watchContentBase: true,
     hot: isDev
   },
   devtool: isDev ? 'source-map' : false,
+  target: isDev ? 'web' : 'browserslist',
   plugins: plugins(),
   module: {
     rules: [
