@@ -1,4 +1,5 @@
 import React from 'react'
+import Control from './Control'
 
 const snakeSize = 20;
 const startCoords = {
@@ -7,10 +8,12 @@ const startCoords = {
 }
 
 class Canvas extends React.Component {
+  canvas = React.createRef()
 
   constructor(props) {
     super(props),
       this.state = {
+        direction: 'up',
         size: {
           width: 500,
           height: 500
@@ -19,100 +22,58 @@ class Canvas extends React.Component {
         snakeCoords:
           [
             startCoords
-            // {
-            //   x: 240,
-            //   y: 440
-            // },
-            // {
-            //   x: 240,
-            //   y: 20
-            // },
-            // {
-            //   x: 240,
-            //   y: 0
-            // },
-            // {
-            //   x: 0,
-            //   y: 240
-            // },
-            // {
-            //   x: 480,
-            //   y: 240
-            // }
           ]
-      },
-
-      this.setContext = this.setContext.bind(this);
+      }
   }
 
-  setContext(c) {
-    this.ctx = c.getContext("2d");
+  focusCanvas() {
+    const { canvas } = this;
+
+    if (canvas && canvas.current) {
+      canvas.current.focus();
+    }
   }
+
+  getCanvasContext() {
+    const { canvas } = this;
+    if (canvas && canvas.current) {
+      return canvas.current.getContext('2d');
+    }
+    return null;
+  };
 
   drawSnake() {
+    const ctx = this.getCanvasContext();
     this.state.snakeCoords.forEach(el => {
-      this.ctx.fillRect(el.x, el.y, snakeSize, snakeSize)
+      ctx.fillRect(el.x, el.y, snakeSize, snakeSize)
     })
-    return
+    ctx.fillStyle = 'brown';
   }
 
   clearCanvas() {
-    this.ctx.clearRect(0, 0, this.state.size.width, this.state.size.height);
+    const ctx = this.getCanvasContext();
+    ctx.clearRect(0, 0, this.state.size.width, this.state.size.height);
   }
 
-  // updateSnake() {
-  //   this.ctx.clearRect(240, 480, snakeSize, snakeSize)
-  // }
+  moveSnake(direction) {
+    this.clearCanvas()
 
-  moveUp() {
-    const newElement = {
-      x: this.state.snakeCoords[0].x,
-      y: this.state.snakeCoords[0].y - 20
-    }
-    const newSnakeCoords = this.state.snakeCoords;
-    newSnakeCoords.pop();
-    newSnakeCoords.unshift(newElement);
-    this.setState({
-      snakeCoords: newSnakeCoords
-    })
-    // this.setState(prev => {
-    //   const snakeCoords = prev.snakeCoords.map(el => {
-    //     el.y = el.y - 20;
-    //   })
-    //   return snakeCoords
-    // })
-  }
-
-  moveDown() {
-    const newElement = {
-      x: this.state.snakeCoords[0].x,
-      y: this.state.snakeCoords[0].y + 20
-    }
-    const newSnakeCoords = this.state.snakeCoords;
-    newSnakeCoords.pop();
-    newSnakeCoords.unshift(newElement);
-    this.setState({
-      snakeCoords: newSnakeCoords
-    })
-  }
-
-  moveRight() {
-    const newElement = {
-      x: this.state.snakeCoords[0].x + 20,
-      y: this.state.snakeCoords[0].y
-    }
-    const newSnakeCoords = this.state.snakeCoords;
-    newSnakeCoords.pop();
-    newSnakeCoords.unshift(newElement);
-    this.setState({
-      snakeCoords: newSnakeCoords
-    })
-  }
-
-  moveLeft() {
-    const newElement = {
-      x: this.state.snakeCoords[0].x - 20,
-      y: this.state.snakeCoords[0].y
+    const newElement = this.state.snakeCoords[0];
+    switch (direction) {
+      case 'up':
+        newElement.y = newElement.y - 20;
+        break;
+      case 'down':
+        newElement.y = newElement.y + 20;
+        break;
+      case 'left':
+        newElement.x = newElement.x - 20;
+        break;
+      case 'right':
+        newElement.x = newElement.x + 20;
+        break;
+      default:
+        console.log('wrong direction');
     }
     const newSnakeCoords = this.state.snakeCoords;
     newSnakeCoords.pop();
@@ -121,10 +82,15 @@ class Canvas extends React.Component {
     this.setState({
       snakeCoords: newSnakeCoords
     })
+    this.drawSnake();
+    console.log('+')
   }
+
+
 
   checkOutIsBumped() {
     console.log(this.state.snakeCoords[0].x, this.state.snakeCoords[0].y)
+    const ctx = this.getCanvasContext();
     if (this.state.snakeCoords[0].x < 0 ||
       this.state.snakeCoords[0].x > 480 ||
       this.state.snakeCoords[0].y < 0 ||
@@ -132,8 +98,8 @@ class Canvas extends React.Component {
 
       // STOP GAME POPUP
       console.log('OUT OF BOARD');
-      this.ctx.fillStyle = "blue";
-      this.ctx.fillRect(0, 0, 500, 500);
+      ctx.fillStyle = "blue";
+      ctx.fillRect(0, 0, 500, 500);
       this.setState({
         isBumped: true
       })
@@ -141,34 +107,64 @@ class Canvas extends React.Component {
     }
   }
 
-  componentDidMount() {
-    this.ctx.fillStyle = 'brown'
-    this.drawSnake();
-    setTimeout(() => {
-      this.clearCanvas();
-      this.moveLeft()
-    }, 500)
+  keyDownHandler = (evt) => {
+    let dir;
+    console.log(evt.keyCode, 'key', this.state.direction)
 
+    switch (evt.keyCode) {
+      case 38:
+        dir = 'up'
+        break;
+      case 40:
+        dir = 'down'
+        break;
+      case 37:
+        dir = 'left'
+        break;
+      case 39:
+        dir = 'right'
+        break;
+      default: return
+    }
+    this.setState({
+      direction: dir
+    })
+    console.log(dir)
   }
 
-  componentDidUpdate() {
-    this.drawSnake();
-    setTimeout(() => {
+  game() {
+    this.timerId = setTimeout(() => {
+
+      this.moveSnake(this.state.direction)
       if (!this.state.isBumped) {
-        this.clearCanvas();
-        this.moveLeft()
+        this.game();
       }
-    }, 500)
+
+    }, 500);
+  }
+
+  componentDidMount() {
+    this.focusCanvas();
+    this.drawSnake();
+    this.game();
+
+    console.log(this.state.direction)
+  }
+
+
+
+  componentDidUpdate() {
   }
 
   componentWillUnmount() {
-    // clearInterval(this.timerID);
   }
 
   render() {
     return <canvas
       className="AppCanvas"
-      ref={this.setContext}
+      ref={this.canvas}
+      tabIndex={0}
+      onKeyDown={this.keyDownHandler}
       width={this.state.size.width}
       height={this.state.size.height}
     />
