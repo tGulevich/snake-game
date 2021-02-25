@@ -1,10 +1,10 @@
 import React from 'react'
-import Control from './Control'
 
-const snakeSize = 20;
+const cellSize = 25;
+const boardSize = 500;
 const startCoords = {
-  x: 240,
-  y: 240
+  x: 225,
+  y: 225
 }
 
 class Canvas extends React.Component {
@@ -15,20 +15,23 @@ class Canvas extends React.Component {
       this.state = {
         direction: 'up',
         size: {
-          width: 500,
-          height: 500
+          width: boardSize,
+          height: boardSize
         },
         isBumped: false,
         snakeCoords:
           [
             startCoords
-          ]
+          ],
+        foodCoords: {
+          x: 0,
+          y: 0
+        }
       }
   }
 
   focusCanvas() {
     const { canvas } = this;
-
     if (canvas && canvas.current) {
       canvas.current.focus();
     }
@@ -42,54 +45,93 @@ class Canvas extends React.Component {
     return null;
   };
 
+  getRandomCoords() {
+    return Math.floor((0 + Math.random() * ((boardSize / cellSize - 1) + 1 - 0))) * cellSize;
+  }
+
+  setFoodCoords() {
+    const { foodCoords } = this.state;
+    foodCoords.x = this.getRandomCoords();
+    foodCoords.y = this.getRandomCoords();
+    this.setState({
+      foodCoords
+    })
+
+    if (this.checkSnakeCoordsMatch(this.state.foodCoords)) {
+      this.setFoodCoords()
+    }
+  }
+
   drawSnake() {
     const ctx = this.getCanvasContext();
     this.state.snakeCoords.forEach(el => {
-      ctx.fillRect(el.x, el.y, snakeSize, snakeSize)
+      ctx.fillRect(el.x, el.y, cellSize, cellSize)
     })
     ctx.fillStyle = 'brown';
   }
 
-  clearCanvas() {
+  drawFood() {
+    this.setFoodCoords();
+    const { foodCoords } = this.state
     const ctx = this.getCanvasContext();
-    ctx.clearRect(0, 0, this.state.size.width, this.state.size.height);
+    let img = new Image();
+    img.src = 'apple.png'
+    img.onload = function () {
+      ctx.drawImage(img, foodCoords.x, foodCoords.y, cellSize, cellSize)
+    }
+    console.log(this.state.foodCoords)
+  }
+
+  clearCanvas(x, y) {
+    const ctx = this.getCanvasContext();
+    ctx.clearRect(x, y, cellSize, cellSize);
   }
 
   moveSnake(direction) {
-    this.clearCanvas()
+    let newElement = {}
 
-    const newElement = this.state.snakeCoords[0];
     switch (direction) {
       case 'up':
-        newElement.y = newElement.y - 20;
+        newElement.x = this.state.snakeCoords[0].x;
+        newElement.y = this.state.snakeCoords[0].y - cellSize;
+
         break;
       case 'down':
-        newElement.y = newElement.y + 20;
+        newElement.x = this.state.snakeCoords[0].x;
+        newElement.y = this.state.snakeCoords[0].y + cellSize;
+
         break;
       case 'left':
-        newElement.x = newElement.x - 20;
+        newElement.x = this.state.snakeCoords[0].x - cellSize;
+        newElement.y = this.state.snakeCoords[0].y;
         break;
       case 'right':
-        newElement.x = newElement.x + 20;
+        newElement.x = this.state.snakeCoords[0].x + cellSize;
+        newElement.y = this.state.snakeCoords[0].y;
         break;
       default:
         console.log('wrong direction');
     }
+
     const newSnakeCoords = this.state.snakeCoords;
-    newSnakeCoords.pop();
     newSnakeCoords.unshift(newElement);
-    this.checkOutIsBumped();
+
+    if (newElement.x === this.state.foodCoords.x && newElement.y === this.state.foodCoords.y) {
+      this.drawFood();
+    } else {
+      const lastElement = this.state.snakeCoords[this.state.snakeCoords.length - 1];
+      this.clearCanvas(lastElement.x, lastElement.y);
+      newSnakeCoords.pop();
+    }
+
     this.setState({
       snakeCoords: newSnakeCoords
     })
+    this.checkOutIsBumped();
     this.drawSnake();
-    console.log('+')
   }
 
-
-
   checkOutIsBumped() {
-    console.log(this.state.snakeCoords[0].x, this.state.snakeCoords[0].y)
     const ctx = this.getCanvasContext();
     if (this.state.snakeCoords[0].x < 0 ||
       this.state.snakeCoords[0].x > 480 ||
@@ -107,10 +149,14 @@ class Canvas extends React.Component {
     }
   }
 
+  checkSnakeCoordsMatch(coords) {
+    return this.state.snakeCoords.some(el => {
+      return JSON.stringify(coords) === JSON.stringify(el)
+    });
+  }
+
   keyDownHandler = (evt) => {
     let dir;
-    console.log(evt.keyCode, 'key', this.state.direction)
-
     switch (evt.keyCode) {
       case 38:
         dir = 'up'
@@ -129,34 +175,23 @@ class Canvas extends React.Component {
     this.setState({
       direction: dir
     })
-    console.log(dir)
   }
 
   game() {
     this.timerId = setTimeout(() => {
-
+      this.getRandomCoords()
       this.moveSnake(this.state.direction)
       if (!this.state.isBumped) {
         this.game();
       }
-
-    }, 500);
+    }, 300);
   }
 
   componentDidMount() {
     this.focusCanvas();
     this.drawSnake();
     this.game();
-
-    console.log(this.state.direction)
-  }
-
-
-
-  componentDidUpdate() {
-  }
-
-  componentWillUnmount() {
+    this.drawFood()
   }
 
   render() {
