@@ -18,7 +18,7 @@ class Canvas extends React.Component {
           width: boardSize,
           height: boardSize
         },
-        isBumped: false,
+        isFail: false,
         snakeCoords:
           [
             startCoords
@@ -79,7 +79,6 @@ class Canvas extends React.Component {
     img.onload = function () {
       ctx.drawImage(img, foodCoords.x, foodCoords.y, cellSize, cellSize)
     }
-    console.log(this.state.foodCoords)
   }
 
   clearCanvas(x, y) {
@@ -99,7 +98,6 @@ class Canvas extends React.Component {
       case 'down':
         newElement.x = this.state.snakeCoords[0].x;
         newElement.y = this.state.snakeCoords[0].y + cellSize;
-
         break;
       case 'left':
         newElement.x = this.state.snakeCoords[0].x - cellSize;
@@ -109,8 +107,11 @@ class Canvas extends React.Component {
         newElement.x = this.state.snakeCoords[0].x + cellSize;
         newElement.y = this.state.snakeCoords[0].y;
         break;
-      default:
-        console.log('wrong direction');
+    }
+
+    if (this.checkSnakeCoordsMatch(newElement)) {
+      this.stopGame();
+      return
     }
 
     const newSnakeCoords = this.state.snakeCoords;
@@ -132,20 +133,11 @@ class Canvas extends React.Component {
   }
 
   checkOutIsBumped() {
-    const ctx = this.getCanvasContext();
     if (this.state.snakeCoords[0].x < 0 ||
-      this.state.snakeCoords[0].x > 480 ||
+      this.state.snakeCoords[0].x > boardSize - cellSize ||
       this.state.snakeCoords[0].y < 0 ||
-      this.state.snakeCoords[0].y > 480) {
-
-      // STOP GAME POPUP
-      console.log('OUT OF BOARD');
-      ctx.fillStyle = "blue";
-      ctx.fillRect(0, 0, 500, 500);
-      this.setState({
-        isBumped: true
-      })
-      console.log(this.state.isBumped)
+      this.state.snakeCoords[0].y > boardSize - cellSize) {
+      this.stopGame();
     }
   }
 
@@ -159,29 +151,49 @@ class Canvas extends React.Component {
     let dir;
     switch (evt.keyCode) {
       case 38:
-        dir = 'up'
+        if (this.state.direction !== 'up' && this.state.direction !== 'down') {
+          dir = 'up'
+        }
         break;
       case 40:
-        dir = 'down'
+        if (this.state.direction !== 'up' && this.state.direction !== 'down') {
+          dir = 'down'
+        }
         break;
       case 37:
-        dir = 'left'
+        if (this.state.direction !== 'left' && this.state.direction !== 'right') {
+          dir = 'left'
+        }
         break;
       case 39:
-        dir = 'right'
+        if (this.state.direction !== 'left' && this.state.direction !== 'right') {
+          dir = 'right'
+        }
         break;
       default: return
     }
+    if (dir) {
+      this.setState({
+        direction: dir
+      })
+    }
+  }
+
+  stopGame() {
     this.setState({
-      direction: dir
+      isFail: true
     })
+    // STOP GAME POPUP
+    const ctx = this.getCanvasContext();
+    ctx.fillStyle = "blue";
+    ctx.fillRect(0, 0, boardSize, boardSize);
   }
 
   game() {
     this.timerId = setTimeout(() => {
       this.getRandomCoords()
       this.moveSnake(this.state.direction)
-      if (!this.state.isBumped) {
+      if (!this.state.isFail) {
         this.game();
       }
     }, 300);
