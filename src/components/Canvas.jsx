@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 
 const cellSize = 25;
 const boardSize = 500;
@@ -6,7 +7,6 @@ const startCoords = {
   x: 225,
   y: 225
 }
-
 class Canvas extends React.Component {
   canvas = React.createRef()
 
@@ -117,8 +117,11 @@ class Canvas extends React.Component {
     const newSnakeCoords = this.state.snakeCoords;
     newSnakeCoords.unshift(newElement);
 
+    // Feed Snake
     if (newElement.x === this.state.foodCoords.x && newElement.y === this.state.foodCoords.y) {
       this.drawFood();
+      const score = this.props.score;
+      this.props.updateScore(score + 1);
     } else {
       const lastElement = this.state.snakeCoords[this.state.snakeCoords.length - 1];
       this.clearCanvas(lastElement.x, lastElement.y);
@@ -217,5 +220,10 @@ class Canvas extends React.Component {
     />
   }
 }
+
+Canvas.propTypes = {
+  score: PropTypes.number,
+  updateScore: PropTypes.func
+};
 
 export default Canvas;

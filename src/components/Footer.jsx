@@ -8,7 +8,7 @@ const useStyles = makeStyles(() => ({
   footer: {
     backgroundColor: '#4C5BD0',
     color: '#fff',
-    padding: '10px',
+    padding: '10px 15px',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center'
