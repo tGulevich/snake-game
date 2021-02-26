@@ -94,7 +94,7 @@ const plugins = () => {
           to: path.resolve(__dirname, 'dist')
         },
         {
-          from: path.resolve(__dirname, 'src/assets/apple.png'),
+          from: path.resolve(__dirname, 'src/assets/'),
           to: path.resolve(__dirname, 'dist')
         },
       ]

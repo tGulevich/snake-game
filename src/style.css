@@ -1,13 +1,21 @@
-h1 {
-  color: red;
-  font-size: 50px;
-  text-align: center;
+@import './fonts.css';
+html {
+  min-height: 100vh;
 }
 
-h2 {
-  color: rgb(70, 79, 196);
+body {
+  padding: 0;
+  margin: 0;
+  background-color: #F5C342;
+  min-height: 100vh;
+  
 }
 
+#root {
+  min-height: inherit;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
 .gameBoard {
   width: 500px;
   height: 500px;

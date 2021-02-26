@@ -1,13 +1,19 @@
 import './style.css'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Canvas from './Canvas'
+import Canvas from './components/Canvas'
+import Header from './components/Header'
+import Footer from './components/Footer'
 
 function App() {
   return (
-    <div className="gameBoard">
-      <Canvas />
-    </div>
+    <React.Fragment>
+      <Header />
+      <div className="gameBoard">
+        <Canvas />
+      </div>
+      <Footer />
+    </React.Fragment>
   )
 }
 
