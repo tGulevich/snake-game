@@ -18,6 +18,9 @@ body {
 
 .wrapper {
 margin: 30px 0;
+display: flex;
+flex-direction: column;
+align-items: center;
 }
 
 .gameBoard {
@@ -45,4 +48,60 @@ margin: 30px 0;
   text-align: center;
   padding: 15px;
   width: 200px;
+}
+
+.MouseControl {
+  margin: 20px auto;
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  column-gap: 10px;
+  row-gap: 4px;
+}
+
+.MouseControl__btn {
+  width: 70px;
+  height: 84px;
+  background-color: #6F7BD0;
+  color: #fff;
+  border: 1px solid #4C5BD0;
+  border-radius: 5px;
+  box-shadow: 3px 3px 5px 0px rgba(0,0,0,0.5);
+  transition: all .4;
+}
+
+.MouseControl__btn:hover{
+  background-color: #4C5BD0;
+}
+
+.MouseControl__btn:active {
+  outline: none;
+  transform: translateY(2px);
+  box-shadow: 2px 1px 5px 0px rgba(0,0,0,0.5);
+}
+.MouseControl__btn:focus {
+  outline: none;
+}
+
+.MouseControl__btn_sm {
+height: 40px;
+}
+
+.MouseControl__btn_lg {
+  width: 80px;
+}
+
+.MouseControl__btn_left {
+  grid-row: 1 / 3;
+}
+
+.MouseControl__btn_up {
+  grid-column: 2 / 3;
+}
+
+.MouseControl__btn_down {
+  grid-column: 2 / 3;
+}
+.MouseControl__btn_right {
+  grid-row: 1 / 3;
+  grid-column: 3 / 4;
 }

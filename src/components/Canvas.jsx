@@ -13,7 +13,6 @@ class Canvas extends React.Component {
   constructor(props) {
     super(props),
       this.state = {
-        direction: 'up',
         size: {
           width: boardSize,
           height: boardSize
@@ -154,31 +153,21 @@ class Canvas extends React.Component {
     let dir;
     switch (evt.keyCode) {
       case 38:
-        if (this.state.direction !== 'up' && this.state.direction !== 'down') {
-          dir = 'up'
-        }
+        dir = 'up'
         break;
       case 40:
-        if (this.state.direction !== 'up' && this.state.direction !== 'down') {
-          dir = 'down'
-        }
+        dir = 'down'
         break;
       case 37:
-        if (this.state.direction !== 'left' && this.state.direction !== 'right') {
-          dir = 'left'
-        }
+        dir = 'left'
         break;
       case 39:
-        if (this.state.direction !== 'left' && this.state.direction !== 'right') {
-          dir = 'right'
-        }
+        dir = 'right'
         break;
       default: return
     }
     if (dir) {
-      this.setState({
-        direction: dir
-      })
+      this.props.updateDirection(dir)
     }
   }
 
@@ -195,7 +184,7 @@ class Canvas extends React.Component {
   game() {
     this.timerId = setTimeout(() => {
       this.getRandomCoords()
-      this.moveSnake(this.state.direction)
+      this.moveSnake(this.props.direction)
       if (!this.state.isFail) {
         this.game();
       }
@@ -223,7 +212,9 @@ class Canvas extends React.Component {
 
 Canvas.propTypes = {
   score: PropTypes.number,
-  updateScore: PropTypes.func
+  updateScore: PropTypes.func,
+  direction: PropTypes.string,
+  updateDirection: PropTypes.func
 };
 
 export default Canvas;
