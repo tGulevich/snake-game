@@ -18,7 +18,7 @@ body {
 }
 
 .wrapper {
-margin: 30px 0;
+margin: 2% 0;
 display: flex;
 flex-direction: column;
 align-items: center;
@@ -40,19 +40,20 @@ align-items: center;
 .Score {
   display: block;
   margin: 0 auto;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   color: #1929A2;
-  border: 2px solid #1929A2;
+  border: 1px solid #1929A2;
   border-radius: 5px;
   font-family: 'Roboto';
-  font-size: 28px;
+  font-size: 18px;
   text-align: center;
-  padding: 15px;
-  width: 200px;
+  padding: 5px;
+  width: 160px;
 }
 
 .MouseControl {
-  margin: 20px auto;
+  margin: 0 auto;
+  margin-top: 10px;
   display: grid;
   grid-template-columns: repeat(3, auto);
   column-gap: 10px;
@@ -117,8 +118,6 @@ height: 40px;
   color: #fff !important; 
 }
 
-
-
 .SettingsLabel.MuiInputLabel-formControl {
   top: 1px;
   font-size: 1.4rem;
@@ -130,7 +129,6 @@ height: 40px;
 
 .SettingsInput {
   color: rgba(255, 255, 255, 0.57) !important; 
-  /* color: #EBAB06 !important; */
 }
 
 .SettingsInput::before {

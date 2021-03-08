@@ -15,7 +15,7 @@ const useStyles = makeStyles(() => ({
 
   },
   rssImage: {
-    height: '54px',
+    height: '30px',
     width: 'auto'
   },
   ghWrap: {
@@ -24,12 +24,12 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center'
   },
   ghImage: {
-    height: '54px',
+    height: '20px',
     width: 'auto'
   },
   ghLink: {
     color: '#fff',
-    padding: '5px'
+    paddingTop: '5px'
   }
 }));
 
@@ -42,7 +42,7 @@ export default function Footer() {
         <Box className={classes.rss}>
           <a href='https://rs.school/react/'><img className={classes.rssImage} src='./rss.svg' /></a>
         </Box>
-        <Typography variant='h5'>React 2021Q1</Typography>
+        <Typography variant='h6'>React 2021Q1</Typography>
         <Box className={classes.ghWrap}>
           <img className={classes.ghImage} src='../github.png' /> <Link className={classes.ghLink} underline='hover' href='https://github.com/tGulevich'>@tGulevich</Link>
         </Box>

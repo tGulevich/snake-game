@@ -7,7 +7,7 @@ import SettingsScreen from './SettingsScreen'
 
 const StyledDrawer = styled(Drawer)`
   .MuiDrawer-paper {
-    top: 84px
+    top: 64px
     }
   }
 `;

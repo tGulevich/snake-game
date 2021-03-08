@@ -19,7 +19,6 @@ const StyledHeaderWrap = styled(Box)({
 const StyledAppBar = styled(AppBar)({
   backgroundColor: '#4C5BD0',
   color: '#fff',
-  padding: '10px'
 })
 
 const Title = styled(Typography)({
@@ -58,7 +57,7 @@ class Header extends Component {
             <IconButton edge="start" color="inherit" aria-label="MusicNote">
               <MusicNoteIcon />
             </IconButton>
-            <Title variant="h4">
+            <Title variant="h5">
               Snake Game
           </Title>
             <IconButton
