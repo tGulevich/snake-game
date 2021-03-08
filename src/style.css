@@ -11,6 +11,7 @@ body {
 }
 
 #root {
+  /* width: 100vw; */
   min-height: inherit;
   display: grid;
   grid-template-rows: auto 1fr auto;
@@ -104,4 +105,34 @@ height: 40px;
 .MouseControl__btn_right {
   grid-row: 1 / 3;
   grid-column: 3 / 4;
+}
+
+.Header__wrap {
+  background-color: '#4C5BD0';
+  color: '#fff';
+  padding: '10px';
+}
+
+.SettingsLabel {
+  color: #fff !important; 
+}
+
+.SettingsInput {
+  color: rgba(255, 255, 255, 0.87) !important; 
+}
+
+.SettingsInput::before {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.42) !important; 
+}
+
+.SettingsInput::after {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.87) !important; 
+}
+
+.SettingsInput .MuiSelect-icon {
+  color: #fff !important; 
+}
+
+.SettingsInput .MuiSelect-select:focus{
+  background-color: rgba(255, 255, 255, 0.05) !important; 
 }

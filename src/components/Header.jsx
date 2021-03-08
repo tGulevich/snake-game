@@ -1,5 +1,7 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { styled } from '@material-ui/core/styles';
+import Box from '@material-ui/core/Box';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -7,73 +9,79 @@ import IconButton from '@material-ui/core/IconButton';
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
 import SettingsIcon from '@material-ui/icons/Settings';
 import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
+import SettingsPanel from './SettingsPanel'
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    width: '100%'
-  },
-  appBar: {
-    backgroundColor: '#4C5BD0',
-    color: '#fff',
-    padding: '10px'
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    flexGrow: 1,
-    textAlign: 'center',
-    marginRight: '50px'
-  },
-}));
+const StyledHeaderWrap = styled(Box)({
+  flexGrow: 1,
+  width: '100%'
+})
 
-export default function Header() {
-  const classes = useStyles();
-  const [auth, setAuth] = React.useState(true);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
+const StyledAppBar = styled(AppBar)({
+  backgroundColor: '#4C5BD0',
+  color: '#fff',
+  padding: '10px'
+})
 
-  const handleChange = (event) => {
-    setAuth(event.target.checked);
-  };
+const Title = styled(Typography)({
+  flexGrow: 1,
+  textAlign: 'center',
+  marginRight: '30px'
+})
 
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+const StyledIconButton = styled(IconButton)({
+  marginRight: '15px'
+})
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+class Header extends Component {
 
-  return (
-    <div className={classes.root}>
-      <AppBar position="static" className={classes.appBar}>
-        <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="Settings">
-            <SettingsIcon />
-          </IconButton>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="MusicNote">
-            <MusicNoteIcon />
-          </IconButton>
-          <Typography variant="h4" className={classes.title}>
-            Snake Game
-          </Typography>
-          {auth && (
-            <div>
-              <IconButton
-                aria-label="EmojiEvents"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
-              >
-                <EmojiEventsIcon />
-              </IconButton>
-            </div>
-          )}
-        </Toolbar>
-      </AppBar>
-    </div>
-  );
+  constructor(props) {
+    super(props);
+    this.state = {
+      settingsOpen: false,
+      soundsOpen: false
+    };
+    this.updateSettingsOpen = this.updateSettingsOpen.bind(this)
+  }
+
+  updateSettingsOpen() {
+    this.setState({ settingsOpen: !this.state.settingsOpen })
+  }
+
+  render() {
+    return (
+      <StyledHeaderWrap>
+        <StyledAppBar position="static">
+          <Toolbar>
+            <StyledIconButton onClick={this.updateSettingsOpen} edge="start" color="inherit" aria-label="Settings">
+              <SettingsIcon />
+            </StyledIconButton>
+            <IconButton edge="start" color="inherit" aria-label="MusicNote">
+              <MusicNoteIcon />
+            </IconButton>
+            <Title variant="h4">
+              Snake Game
+          </Title>
+            <IconButton
+              aria-label="EmojiEvents"
+              color="inherit"
+            >
+              <EmojiEventsIcon />
+            </IconButton>
+          </Toolbar>
+        </StyledAppBar>
+        <SettingsPanel
+          settingsOpen={this.state.settingsOpen}
+          updateSettingsOpen={this.updateSettingsOpen}
+          level={this.props.level}
+          updateLevel={this.props.updateLevel}
+        />
+      </StyledHeaderWrap>
+    );
+  }
 }
+Header.propTypes = {
+  level: PropTypes.string,
+  updateLevel: PropTypes.func,
+};
+
+export default Header;

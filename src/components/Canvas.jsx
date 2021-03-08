@@ -6,7 +6,11 @@ const boardSize = 500;
 const startCoords = {
   x: 225,
   y: 225
-}
+};
+const EASY_SPEED = 500;
+const MEDIUM_SPEED = 300;
+const HARD_SPEED = 100;
+
 class Canvas extends React.Component {
   canvas = React.createRef()
 
@@ -171,6 +175,23 @@ class Canvas extends React.Component {
     }
   }
 
+  checkCurrentSpeed = () => {
+    let speed;
+    switch (this.props.level) {
+      case 'easy':
+        speed = EASY_SPEED;
+        break;
+      case 'medium':
+        speed = MEDIUM_SPEED;
+        break;
+      case 'hard':
+        speed = HARD_SPEED;
+        break;
+      default: return
+    }
+    return speed;
+  }
+
   stopGame() {
     this.setState({
       isFail: true
@@ -182,13 +203,16 @@ class Canvas extends React.Component {
   }
 
   game() {
+    const currentSpeed = this.checkCurrentSpeed();
+
     this.timerId = setTimeout(() => {
+      console.log('game')
       this.getRandomCoords()
       this.moveSnake(this.props.direction)
       if (!this.state.isFail) {
         this.game();
       }
-    }, 300);
+    }, currentSpeed);
   }
 
   componentDidMount() {
@@ -214,7 +238,8 @@ Canvas.propTypes = {
   score: PropTypes.number,
   updateScore: PropTypes.func,
   direction: PropTypes.string,
-  updateDirection: PropTypes.func
+  updateDirection: PropTypes.func,
+  level: PropTypes.string,
 };
 
 export default Canvas;

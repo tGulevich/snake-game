@@ -1,15 +1,13 @@
 import './style.css'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Header from './components/Header'
 import Footer from './components/Footer'
-import Game from './components/Game'
+import GameState from './components/GameState'
 
 function App() {
   return (
     <React.Fragment>
-      <Header />
-      <Game />
+      <GameState />
       <Footer />
     </React.Fragment>
   )

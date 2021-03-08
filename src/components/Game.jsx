@@ -1,19 +1,19 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 import '../style.css'
 import Canvas from './Canvas'
 import Score from './Score'
 import MouseControl from './MouseControl'
-
 
 class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       score: 0,
-      direction: 'up'
+      direction: 'up',
     };
-
   }
+
   updateScore = (value) => {
     this.setState({ score: value })
   }
@@ -34,7 +34,6 @@ class Game extends React.Component {
     if (newDirection) {
       this.setState({ direction: newDirection })
     }
-
   }
 
   render() {
@@ -46,7 +45,8 @@ class Game extends React.Component {
             score={this.state.score}
             updateScore={this.updateScore}
             direction={this.state.direction}
-            updateDirection={this.updateDirection} />
+            updateDirection={this.updateDirection}
+            level={this.props.level} />
         </div>
         <MouseControl
           updateDirection={this.updateDirection} />
@@ -55,4 +55,11 @@ class Game extends React.Component {
   }
 }
 
+Game.propTypes = {
+  level: PropTypes.string,
+};
+
+
 export default Game;
+
+
