@@ -28,7 +28,11 @@ class SettingsPanel extends React.Component {
           >
             <SettingsScreen
               level={this.props.level}
-              updateLevel={this.props.updateLevel} />
+              updateLevel={this.props.updateLevel}
+              blocks={this.props.blocks}
+              updateBlocksStatus={this.props.updateBlocksStatus}
+              scene={this.props.scene}
+              updateScene={this.props.updateScene} />
           </Box>
         </StyledDrawer >
       </React.Fragment >
@@ -41,6 +45,10 @@ SettingsPanel.propTypes = {
   updateSettingsOpen: PropTypes.func,
   level: PropTypes.string,
   updateLevel: PropTypes.func,
+  blocks: PropTypes.bool,
+  updateBlocksStatus: PropTypes.func,
+  scene: PropTypes.string,
+  updateScene: PropTypes.func,
 };
 
 export default SettingsPanel

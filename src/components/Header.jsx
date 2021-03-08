@@ -74,6 +74,10 @@ class Header extends Component {
           updateSettingsOpen={this.updateSettingsOpen}
           level={this.props.level}
           updateLevel={this.props.updateLevel}
+          blocks={this.props.blocks}
+          updateBlocksStatus={this.props.updateBlocksStatus}
+          scene={this.props.scene}
+          updateScene={this.props.updateScene}
         />
       </StyledHeaderWrap>
     );
@@ -82,6 +86,10 @@ class Header extends Component {
 Header.propTypes = {
   level: PropTypes.string,
   updateLevel: PropTypes.func,
+  blocks: PropTypes.bool,
+  updateBlocksStatus: PropTypes.func,
+  scene: PropTypes.string,
+  updateScene: PropTypes.func,
 };
 
 export default Header;
