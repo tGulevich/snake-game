@@ -49,6 +49,8 @@ class Game extends React.Component {
             level={this.props.level} />
         </div>
         <MouseControl
+          pause={this.props.pause}
+          updatePause={this.props.updatePause}
           updateDirection={this.updateDirection} />
       </div>
     )
@@ -57,8 +59,9 @@ class Game extends React.Component {
 
 Game.propTypes = {
   level: PropTypes.string,
+  pause: PropTypes.bool,
+  updatePause: PropTypes.func
 };
-
 
 export default Game;
 

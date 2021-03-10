@@ -4,36 +4,55 @@ import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import PauseCircleOutlineIcon from '@material-ui/icons/PauseCircleOutline';
 
 class MouseControl extends React.Component {
 
   render() {
-    function ArrowClickHandler(dir) {
+    // console.log(this.props.pause)
+    function arrowClickHandler(dir) {
       this.props.updateDirection(dir)
+    }
+
+    function pauseClickHandler() {
+      this.props.updatePause();
+      if (this.props.pause) {
+        console.log('TRUE')
+      }
     }
 
     return (
       <div className='MouseControl'>
-        <button
-          onClick={ArrowClickHandler.bind(this, 'left')}
-          className='MouseControl__btn MouseControl__btn_lg MouseControl__btn_left'>
-          <ArrowLeftIcon fontSize='large' />
-        </button>
-        <button
-          onClick={ArrowClickHandler.bind(this, 'up')}
-          className='MouseControl__btn MouseControl__btn_sm MouseControl__btn_up'>
-          <ArrowDropUpIcon fontSize='large' />
-        </button>
-        <button
-          onClick={ArrowClickHandler.bind(this, 'down')}
-          className='MouseControl__btn MouseControl__btn_sm MouseControl__btn_down'>
-          <ArrowDropDownIcon fontSize='large' />
-        </button>
-        <button
-          onClick={ArrowClickHandler.bind(this, 'right')}
-          className='MouseControl__btn MouseControl__btn_lg MouseControl__btn_right'>
-          <ArrowRightIcon fontSize='large' />
-        </button>
+        <div className='PauseControl'>
+          <button
+            onClick={pauseClickHandler.bind(this)}
+            className='MouseControl__btn MouseControl__btn_md MouseControl__btn_pause'>
+            <PauseCircleOutlineIcon fontSize='large' />
+          </button>
+          <p>Pause (ESC)</p>
+        </div>
+        <div className='MoveControl'>
+          <button
+            onClick={arrowClickHandler.bind(this, 'left')}
+            className='MouseControl__btn MouseControl__btn_lg MouseControl__btn_left'>
+            <ArrowLeftIcon fontSize='large' />
+          </button>
+          <button
+            onClick={arrowClickHandler.bind(this, 'up')}
+            className='MouseControl__btn MouseControl__btn_sm MouseControl__btn_up'>
+            <ArrowDropUpIcon fontSize='large' />
+          </button>
+          <button
+            onClick={arrowClickHandler.bind(this, 'down')}
+            className='MouseControl__btn MouseControl__btn_sm MouseControl__btn_down'>
+            <ArrowDropDownIcon fontSize='large' />
+          </button>
+          <button
+            onClick={arrowClickHandler.bind(this, 'right')}
+            className='MouseControl__btn MouseControl__btn_lg MouseControl__btn_right'>
+            <ArrowRightIcon fontSize='large' />
+          </button>
+        </div>
       </div>
     );
   }
@@ -41,6 +60,8 @@ class MouseControl extends React.Component {
 
 MouseControl.propTypes = {
   updateDirection: PropTypes.func,
+  pause: PropTypes.bool,
+  updatePause: PropTypes.func
 };
 
 export default MouseControl;
