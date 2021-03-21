@@ -16,26 +16,16 @@ class Canvas extends React.Component {
   constructor(props) {
     super(props),
       this.state = {
-        // size: {
-        //   width: boardSize,
-        //   height: boardSize
-        // },
-        // isFail: false,
         foodCoords: this.props.foodCoords
-        // foodCoords: {
-        //   x: 0,
-        //   y: 0
-        // },
-        // isPause: this.props.pause
       }
   }
 
-  focusCanvas() {
-    const { canvas } = this;
-    if (canvas && canvas.current) {
-      canvas.current.focus();
-    }
-  }
+  // focusCanvas() {
+  //   const { canvas } = this;
+  //   if (canvas && canvas.current) {
+  //     canvas.current.focus();
+  //   }
+  // }
 
   getCanvasContext() {
     const { canvas } = this;
@@ -51,10 +41,6 @@ class Canvas extends React.Component {
 
   setFoodCoords() {
     const { foodCoords } = this.state;
-    // let newFoodCoords = {}
-    // newFoodCoords.x = this.getRandomCoords();
-    // newFoodCoords.y = this.getRandomCoords();
-    // console.log(newFoodCoords)
 
     foodCoords.x = this.getRandomCoords();
     foodCoords.y = this.getRandomCoords();
@@ -78,13 +64,10 @@ class Canvas extends React.Component {
       this.props.snakeCoords.forEach(el => {
         ctx.fillRect(el.x, el.y, cellSize, cellSize)
       })
-
     }
-
   }
 
   drawFood() {
-    // this.setFoodCoords();
     const foodCoords = this.state.foodCoords;
     const ctx = this.getCanvasContext();
 
@@ -95,7 +78,6 @@ class Canvas extends React.Component {
         ctx.drawImage(img, foodCoords.x, foodCoords.y, cellSize, cellSize)
       }
     }
-
   }
 
   clearCanvas(x, y) {
@@ -104,7 +86,6 @@ class Canvas extends React.Component {
       ctx.clearRect(x, y, cellSize, cellSize);
     }
     return
-
   }
 
   moveSnake(direction) {
@@ -139,12 +120,9 @@ class Canvas extends React.Component {
 
       const newSnakeCoords = this.props.snakeCoords;
       newSnakeCoords.unshift(newElement);
-      // console.log(this.props.foodCoords);
-      // console.log(newElement)
 
       // Feed Snake
       if (newElement.x === this.state.foodCoords.x && newElement.y === this.state.foodCoords.y) {
-        console.log('FEED')
         this.setFoodCoords();
         this.drawFood();
         const score = this.props.score;
@@ -155,9 +133,6 @@ class Canvas extends React.Component {
         newSnakeCoords.pop();
       }
 
-      // this.setState({
-      //   snakeCoords: newSnakeCoords // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      // })
       this.props.updateSnakeCoords(newSnakeCoords);
       this.checkOutIsBumped();
       this.drawSnake();
@@ -179,27 +154,7 @@ class Canvas extends React.Component {
     });
   }
 
-  keyDownHandler = (evt) => {
-    let dir;
-    switch (evt.keyCode) {
-      case 38:
-        dir = 'up'
-        break;
-      case 40:
-        dir = 'down'
-        break;
-      case 37:
-        dir = 'left'
-        break;
-      case 39:
-        dir = 'right'
-        break;
-      default: return
-    }
-    if (dir) {
-      this.props.updateDirection(dir)
-    }
-  }
+
 
   checkCurrentSpeed = () => {
     let speed;
@@ -220,13 +175,6 @@ class Canvas extends React.Component {
 
   stopGame() {
     this.props.updateFail();
-    // this.setState({
-    //   isFail: true
-    // })
-    // STOP GAME POPUP
-    // const ctx = this.getCanvasContext();
-    // ctx.fillStyle = "blue";
-    // ctx.fillRect(0, 0, boardSize, boardSize);
   }
 
   game() {
@@ -235,11 +183,8 @@ class Canvas extends React.Component {
       const currentSpeed = this.checkCurrentSpeed();
 
       this.timerId = setTimeout(() => {
-        // const isPause = ;
-        // console.log(this.props.pause)
         this.getRandomCoords()
         this.moveSnake(this.props.direction)
-
 
         if (!this.props.fail && !this.props.pause) {
           this.game();
@@ -251,28 +196,21 @@ class Canvas extends React.Component {
   }
 
   componentDidMount() {
-    this.focusCanvas();
+    // this.focusCanvas();
     this.drawSnake();
     this.game();
-    // console.log(this.props.newGame)
     if (this.props.newGame) {
       this.setFoodCoords();
     }
-    // this.setFoodCoords();
     this.drawFood()
   }
 
-
-
   render() {
-    // console.log(this.props.pause)
-    // this.updatePauseState()
 
     return <canvas
       className="AppCanvas"
       ref={this.canvas}
       tabIndex={0}
-      onKeyDown={this.keyDownHandler}
       width={boardSize} // !!!!!
       height={boardSize} // !!!!!
     />

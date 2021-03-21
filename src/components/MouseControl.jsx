@@ -15,7 +15,7 @@ class MouseControl extends React.Component {
 
     function pauseClickHandler() {
       this.props.updatePause();
-      this.props.updateNewGame();
+      this.props.turnOffNewGameState();
     }
 
     return (
@@ -59,7 +59,7 @@ MouseControl.propTypes = {
   updateDirection: PropTypes.func,
   pause: PropTypes.bool,
   updatePause: PropTypes.func,
-  updateNewGame: PropTypes.func,
+  turnOffNewGameState: PropTypes.func,
 };
 
 export default MouseControl;

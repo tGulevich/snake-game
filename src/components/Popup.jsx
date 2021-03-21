@@ -6,7 +6,7 @@ export default function Popup(props) {
 
   function continueClickHandler() {
     props.updatePause();
-    props.updateNewGame();
+    props.turnOffNewGameState();
   }
   // console.log(props.pause)
   return (
@@ -23,5 +23,5 @@ Popup.propTypes = {
   pause: PropTypes.bool,
   updatePause: PropTypes.func,
   // newGame: PropTypes.bool,
-  updateNewGame: PropTypes.func,
+  turnOffNewGameState: PropTypes.func,
 }

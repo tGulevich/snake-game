@@ -16,7 +16,7 @@ class Game extends React.Component {
     super(props);
     this.state = {
       score: 0,
-      direction: 'up',
+
       snakeCoords:
         [
           startCoords
@@ -25,11 +25,10 @@ class Game extends React.Component {
         x: 0,
         y: 0
       },
-      newGame: true,
+
     };
     this.updateSnakeCoords = this.updateSnakeCoords.bind(this);
     this.updateFoodCoords = this.updateFoodCoords.bind(this);
-    this.updateNewGame = this.updateNewGame.bind(this);
 
 
   }
@@ -37,35 +36,14 @@ class Game extends React.Component {
   updateScore = (value) => {
     this.setState({ score: value })
   }
-  updateDirection = (dir) => {
-    let newDirection;
-    if (dir === 'up' && this.state.direction !== 'up' && this.state.direction !== 'down') {
-      newDirection = 'up'
-    } else if (dir === 'down' && this.state.direction !== 'up' && this.state.direction !== 'down') {
-      newDirection = 'down'
-    } else if (dir === 'left' && this.state.direction !== 'left' && this.state.direction !== 'right') {
-      newDirection = 'left'
-    } else if (dir === 'right' && this.state.direction !== 'left' && this.state.direction !== 'right') {
-      newDirection = 'right'
-    } else {
-      return
-    }
 
-    if (newDirection) {
-      this.setState({ direction: newDirection })
-    }
-  }
   updateSnakeCoords = (coords) => {
     this.setState({ snakeCoords: coords })
   }
   updateFoodCoords = (coords) => {
     this.setState({ foodCoords: coords })
   }
-  updateNewGame = () => {
-    // this.setState({ newGame: !this.state.newGame })
-    this.setState({ newGame: false })
 
-  }
 
   render() {
     const isPause = this.props.pause;
@@ -81,14 +59,14 @@ class Game extends React.Component {
             <Popup
               pause={this.props.pause}
               updatePause={this.props.updatePause}
-              newGame={this.state.newGame}
-              updateNewGame={this.updateNewGame}
+              // newGame={this.props.newGame}
+              turnOffNewGameState={this.props.turnOffNewGameState}
             />
             : <Canvas
               score={this.state.score}
               updateScore={this.updateScore}
-              direction={this.state.direction}
-              updateDirection={this.updateDirection}
+              direction={this.props.direction}
+              updateDirection={this.props.updateDirection}
               level={this.props.level}
               pause={this.props.pause}
               updatePause={this.props.updatePause}
@@ -98,7 +76,7 @@ class Game extends React.Component {
               updateSnakeCoords={this.updateSnakeCoords}
               foodCoords={this.state.foodCoords}
               updateFoodCoords={this.updateFoodCoords}
-              newGame={this.state.newGame}
+              newGame={this.props.newGame}
             // updateNewGame={this.updateNewGame}
             />
           }
@@ -106,8 +84,8 @@ class Game extends React.Component {
         <MouseControl
           pause={this.props.pause}
           updatePause={this.props.updatePause}
-          updateDirection={this.updateDirection}
-          updateNewGame={this.updateNewGame} />
+          updateDirection={this.props.updateDirection}
+          turnOffNewGameState={this.props.turnOffNewGameState} />
       </div>
     )
   }
@@ -118,7 +96,11 @@ Game.propTypes = {
   fail: PropTypes.bool,
   updateFail: PropTypes.func,
   pause: PropTypes.bool,
-  updatePause: PropTypes.func
+  updatePause: PropTypes.func,
+  direction: PropTypes.string,
+  updateDirection: PropTypes.func,
+  newGame: PropTypes.bool,
+  turnOffNewGameState: PropTypes.func,
 };
 
 export default Game;
