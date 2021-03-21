@@ -1,14 +1,14 @@
 import React from 'react';
 import Header from './Header'
 import Game from './Game'
-import Popup from './Popup'
 
 class GameState extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      fail: false,
       pause: false,
-      level: 'easy',
+      level: 'medium',
       blocks: true,
       scene: 'grass'
     };
@@ -16,6 +16,7 @@ class GameState extends React.Component {
     this.updateBlocksStatus = this.updateBlocksStatus.bind(this);
     this.updateScene = this.updateScene.bind(this);
     this.updatePause = this.updatePause.bind(this);
+    this.updateFail = this.updateFail.bind(this);
   }
 
   updateLevel = (evt) => {
@@ -34,8 +35,12 @@ class GameState extends React.Component {
     this.setState({ pause: !this.state.pause })
   }
 
+  updateFail = () => {
+    this.setState({ fail: !this.state.fail })
+  }
+
   render() {
-    const isPause = this.state.pause;
+
 
     return (
       <React.Fragment>
@@ -47,10 +52,12 @@ class GameState extends React.Component {
           scene={this.state.scene}
           updateScene={this.updateScene}
         />
-        {isPause ? <Popup /> : null}
+
 
         <Game
           level={this.state.level}
+          fail={this.state.fail}
+          updateFail={this.updateFail}
           pause={this.state.pause}
           updatePause={this.updatePause}
         />

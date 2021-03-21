@@ -9,16 +9,13 @@ import PauseCircleOutlineIcon from '@material-ui/icons/PauseCircleOutline';
 class MouseControl extends React.Component {
 
   render() {
-    // console.log(this.props.pause)
     function arrowClickHandler(dir) {
       this.props.updateDirection(dir)
     }
 
     function pauseClickHandler() {
       this.props.updatePause();
-      if (this.props.pause) {
-        console.log('TRUE')
-      }
+      this.props.updateNewGame();
     }
 
     return (
@@ -61,7 +58,8 @@ class MouseControl extends React.Component {
 MouseControl.propTypes = {
   updateDirection: PropTypes.func,
   pause: PropTypes.bool,
-  updatePause: PropTypes.func
+  updatePause: PropTypes.func,
+  updateNewGame: PropTypes.func,
 };
 
 export default MouseControl;
