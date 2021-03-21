@@ -16,7 +16,6 @@ class Game extends React.Component {
     super(props);
     this.state = {
       score: 0,
-
       snakeCoords:
         [
           startCoords
@@ -28,9 +27,9 @@ class Game extends React.Component {
 
     };
     this.updateSnakeCoords = this.updateSnakeCoords.bind(this);
+    this.resetSnakeCoords = this.resetSnakeCoords.bind(this);
     this.updateFoodCoords = this.updateFoodCoords.bind(this);
-
-
+    this.updateScore = this.updateScore.bind(this);
   }
 
   updateScore = (value) => {
@@ -40,16 +39,28 @@ class Game extends React.Component {
   updateSnakeCoords = (coords) => {
     this.setState({ snakeCoords: coords })
   }
+  resetSnakeCoords = () => {
+    this.setState({
+      snakeCoords: [
+        startCoords
+      ]
+    })
+  }
   updateFoodCoords = (coords) => {
     this.setState({ foodCoords: coords })
   }
 
+  restartGame = () => {
+    this.resetSnakeCoords();
+    this.updateScore(0);
+    this.props.turnOnNewGameState();
+    this.props.resetDirection();
+  }
 
   render() {
     const isPause = this.props.pause;
     const isFail = this.props.fail;
 
-    // console.log(this.state.newGame)
     return (
       <div className="wrapper" >
         <Score score={this.state.score} />
@@ -59,8 +70,12 @@ class Game extends React.Component {
             <Popup
               pause={this.props.pause}
               updatePause={this.props.updatePause}
-              // newGame={this.props.newGame}
+              fail={this.props.fail}
+              updateFail={this.props.updateFail}
               turnOffNewGameState={this.props.turnOffNewGameState}
+              turnOnNewGameState={this.props.turnOnNewGameState}
+              updateScore={this.updateScore}
+              restartGame={this.restartGame}
             />
             : <Canvas
               score={this.state.score}
@@ -77,7 +92,6 @@ class Game extends React.Component {
               foodCoords={this.state.foodCoords}
               updateFoodCoords={this.updateFoodCoords}
               newGame={this.props.newGame}
-            // updateNewGame={this.updateNewGame}
             />
           }
         </div>
@@ -85,7 +99,9 @@ class Game extends React.Component {
           pause={this.props.pause}
           updatePause={this.props.updatePause}
           updateDirection={this.props.updateDirection}
-          turnOffNewGameState={this.props.turnOffNewGameState} />
+          turnOffNewGameState={this.props.turnOffNewGameState}
+          turnOnNewGameState={this.props.turnOnNewGameState}
+          updateScore={this.updateScore} />
       </div>
     )
   }
@@ -99,8 +115,11 @@ Game.propTypes = {
   updatePause: PropTypes.func,
   direction: PropTypes.string,
   updateDirection: PropTypes.func,
+  resetDirection: PropTypes.func,
   newGame: PropTypes.bool,
   turnOffNewGameState: PropTypes.func,
+  turnOnNewGameState: PropTypes.func,
+
 };
 
 export default Game;

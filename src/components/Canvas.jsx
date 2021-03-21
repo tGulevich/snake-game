@@ -114,7 +114,8 @@ class Canvas extends React.Component {
       }
 
       if (this.checkSnakeCoordsMatch(newElement)) {
-        this.stopGame();
+        // this.stopGame();
+        this.props.updateFail();
         return
       }
 
@@ -144,7 +145,8 @@ class Canvas extends React.Component {
       this.props.snakeCoords[0].x > boardSize - cellSize ||
       this.props.snakeCoords[0].y < 0 ||
       this.props.snakeCoords[0].y > boardSize - cellSize) {
-      this.stopGame();
+      // this.stopGame();
+      this.props.updateFail();
     }
   }
 
@@ -173,9 +175,9 @@ class Canvas extends React.Component {
     return speed;
   }
 
-  stopGame() {
-    this.props.updateFail();
-  }
+  // stopGame() {
+  //  this.props.updateFail(); 
+  // }
 
   game() {
     const ctx = this.getCanvasContext();

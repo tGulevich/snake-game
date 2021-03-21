@@ -71,6 +71,10 @@ class GameState extends React.Component {
     }
   }
 
+  resetDirection = () => {
+    this.setState({ direction: 'up' })
+  }
+
   keyDownHandler = (evt) => {
     let dir;
     switch (evt.keyCode) {
@@ -120,8 +124,10 @@ class GameState extends React.Component {
           updatePause={this.updatePause}
           direction={this.state.direction}
           updateDirection={this.updateDirection}
+          resetDirection={this.resetDirection}
           newGame={this.state.newGame}
           turnOffNewGameState={this.turnOffNewGameState}
+          turnOnNewGameState={this.turnOnNewGameState}
         />
         <Footer />
       </React.Fragment>
