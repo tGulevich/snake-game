@@ -24,7 +24,7 @@ class Game extends React.Component {
         x: 0,
         y: 0
       },
-
+      blockCoords: [{ x: 0, y: 0 }, { x: 0, y: 0 }],
     };
     this.updateSnakeCoords = this.updateSnakeCoords.bind(this);
     this.resetSnakeCoords = this.resetSnakeCoords.bind(this);
@@ -87,11 +87,14 @@ class Game extends React.Component {
               updatePause={this.props.updatePause}
               fail={this.props.fail}
               updateFail={this.props.updateFail}
+              blocks={this.props.blocks}
               snakeCoords={this.state.snakeCoords}
               updateSnakeCoords={this.updateSnakeCoords}
               foodCoords={this.state.foodCoords}
               updateFoodCoords={this.updateFoodCoords}
+              blockCoords={this.state.blockCoords}
               newGame={this.props.newGame}
+              scene={this.props.scene}
             />
           }
         </div>
@@ -112,6 +115,7 @@ Game.propTypes = {
   fail: PropTypes.bool,
   updateFail: PropTypes.func,
   pause: PropTypes.bool,
+  blocks: PropTypes.bool,
   updatePause: PropTypes.func,
   direction: PropTypes.string,
   updateDirection: PropTypes.func,
@@ -119,7 +123,7 @@ Game.propTypes = {
   newGame: PropTypes.bool,
   turnOffNewGameState: PropTypes.func,
   turnOnNewGameState: PropTypes.func,
-
+  scene: PropTypes.string
 };
 
 export default Game;

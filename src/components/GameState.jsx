@@ -122,12 +122,14 @@ class GameState extends React.Component {
           updateFail={this.updateFail}
           pause={this.state.pause}
           updatePause={this.updatePause}
+          blocks={this.state.blocks}
           direction={this.state.direction}
           updateDirection={this.updateDirection}
           resetDirection={this.resetDirection}
           newGame={this.state.newGame}
           turnOffNewGameState={this.turnOffNewGameState}
           turnOnNewGameState={this.turnOnNewGameState}
+          scene={this.state.scene}
         />
         <Footer />
       </React.Fragment>

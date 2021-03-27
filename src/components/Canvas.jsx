@@ -16,16 +16,10 @@ class Canvas extends React.Component {
   constructor(props) {
     super(props),
       this.state = {
-        foodCoords: this.props.foodCoords
+        foodCoords: this.props.foodCoords,
+        blockCoords: this.props.blockCoords,
       }
   }
-
-  // focusCanvas() {
-  //   const { canvas } = this;
-  //   if (canvas && canvas.current) {
-  //     canvas.current.focus();
-  //   }
-  // }
 
   getCanvasContext() {
     const { canvas } = this;
@@ -41,24 +35,40 @@ class Canvas extends React.Component {
 
   setFoodCoords() {
     const { foodCoords } = this.state;
-
     foodCoords.x = this.getRandomCoords();
     foodCoords.y = this.getRandomCoords();
-
     this.setState({
       foodCoords
     })
-
     this.props.updateFoodCoords(this.state.foodCoords)
 
-    if (this.checkSnakeCoordsMatch(this.state.foodCoords)) {
+    if (this.checkSnakeCoordsMatch(this.state.foodCoords) ||
+      this.checkBlocksCoordsMatch(this.state.foodCoords)) {
       this.setFoodCoords()
+    }
+  }
+
+  setBlockCoords() {
+    const newBlockCoords = this.props.blockCoords.map(el => {
+      el.x = this.getRandomCoords();
+      el.y = this.getRandomCoords();
+      return el;
+    })
+
+    this.setState({
+      blockCoords: newBlockCoords
+    })
+
+    if (this.checkSnakeCoordsMatch(this.state.blockCoords) ||
+      JSON.stringify(this.state.foodCoords) === JSON.stringify(newBlockCoords[0]) ||
+      JSON.stringify(this.state.foodCoords) === JSON.stringify(newBlockCoords[1]) ||
+      JSON.stringify(newBlockCoords[0]) === JSON.stringify(newBlockCoords[1])) {
+      this.setBlockCoords()
     }
   }
 
   drawSnake() {
     const ctx = this.getCanvasContext();
-
     if (ctx) {
       ctx.fillStyle = SNAKE_COLOR;
       this.props.snakeCoords.forEach(el => {
@@ -73,10 +83,23 @@ class Canvas extends React.Component {
 
     if (ctx) {
       let img = new Image();
-      img.src = 'apple.png' // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      img.src = `${this.props.scene}_food.png`;
       img.onload = function () {
         ctx.drawImage(img, foodCoords.x, foodCoords.y, cellSize, cellSize)
       }
+    }
+  }
+
+  drawBlock() {
+    const ctx = this.getCanvasContext();
+    if (ctx) {
+      this.state.blockCoords.forEach((el, i) => {
+        let img = new Image();
+        img.src = `${this.props.scene}_block_${i}.png`;
+        img.onload = function () {
+          ctx.drawImage(img, el.x, el.y, cellSize, cellSize)
+        }
+      })
     }
   }
 
@@ -114,7 +137,6 @@ class Canvas extends React.Component {
       }
 
       if (this.checkSnakeCoordsMatch(newElement)) {
-        // this.stopGame();
         this.props.updateFail();
         return
       }
@@ -145,8 +167,14 @@ class Canvas extends React.Component {
       this.props.snakeCoords[0].x > boardSize - cellSize ||
       this.props.snakeCoords[0].y < 0 ||
       this.props.snakeCoords[0].y > boardSize - cellSize) {
-      // this.stopGame();
       this.props.updateFail();
+    }
+    if (this.props.blocks) {
+      this.props.blockCoords.forEach(el => {
+        if (JSON.stringify(this.props.snakeCoords[0]) === JSON.stringify(el)) {
+          this.props.updateFail();
+        }
+      });
     }
   }
 
@@ -156,7 +184,11 @@ class Canvas extends React.Component {
     });
   }
 
-
+  checkBlocksCoordsMatch(coords) {
+    return this.props.blockCoords.some(el => {
+      return JSON.stringify(coords) === JSON.stringify(el)
+    });
+  }
 
   checkCurrentSpeed = () => {
     let speed;
@@ -174,10 +206,6 @@ class Canvas extends React.Component {
     }
     return speed;
   }
-
-  // stopGame() {
-  //  this.props.updateFail(); 
-  // }
 
   game() {
     const ctx = this.getCanvasContext();
@@ -198,17 +226,22 @@ class Canvas extends React.Component {
   }
 
   componentDidMount() {
-    // this.focusCanvas();
     this.drawSnake();
     this.game();
     if (this.props.newGame) {
       this.setFoodCoords();
     }
     this.drawFood()
+
+    if (this.props.blocks) {
+      if (this.props.newGame) {
+        this.setBlockCoords();
+      }
+      this.drawBlock()
+    }
   }
 
   render() {
-
     return <canvas
       className="AppCanvas"
       ref={this.canvas}
@@ -234,6 +267,10 @@ Canvas.propTypes = {
   updateFoodCoords: PropTypes.func,
   newGame: PropTypes.bool,
   updateNewGame: PropTypes.func,
+  blocks: PropTypes.bool,
+  blockCoords: PropTypes.array,
+  scene: PropTypes.string
+
 };
 
 export default Canvas;
