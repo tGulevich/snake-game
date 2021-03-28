@@ -60,12 +60,13 @@ class Game extends React.Component {
   render() {
     const isPause = this.props.pause;
     const isFail = this.props.fail;
+    const background = `url('${this.props.scene}.jpg')`;
 
     return (
       <div className="wrapper" >
         <Score score={this.state.score} />
 
-        <div className="gameBoard">
+        <div className="gameBoard" style={{ backgroundImage: background }}>
           {isPause || isFail ?
             <Popup
               pause={this.props.pause}

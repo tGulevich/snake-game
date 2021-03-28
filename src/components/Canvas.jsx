@@ -70,7 +70,20 @@ class Canvas extends React.Component {
   drawSnake() {
     const ctx = this.getCanvasContext();
     if (ctx) {
-      ctx.fillStyle = SNAKE_COLOR;
+      let snakeColor;
+      switch (this.props.scene) {
+        case 'grass':
+          snakeColor = '#8f4300';
+          break;
+        case 'space':
+          snakeColor = '#7c2bba';
+          break;
+        case 'ocean':
+          snakeColor = '#1f3399';
+          break;
+      }
+
+      ctx.fillStyle = snakeColor;
       this.props.snakeCoords.forEach(el => {
         ctx.fillRect(el.x, el.y, cellSize, cellSize)
       })
