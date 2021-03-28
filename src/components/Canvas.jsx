@@ -1,5 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types';
+import soundFeed from '../assets/sounds/feed.mp3'
+import soundFail from '../assets/sounds/fail.mp3'
+
 
 const cellSize = 25;
 const boardSize = 500;
@@ -8,7 +11,8 @@ const EASY_SPEED = 500;
 const MEDIUM_SPEED = 300;
 const HARD_SPEED = 100;
 
-const SNAKE_COLOR = 'brown';
+const feedAudio = new Audio(soundFeed);
+const failAudio = new Audio(soundFail);
 
 class Canvas extends React.Component {
   canvas = React.createRef()
@@ -151,7 +155,9 @@ class Canvas extends React.Component {
 
       if (this.checkSnakeCoordsMatch(newElement)) {
         this.props.updateFail();
-        return
+        failAudio.volume = this.props.soundVolume / 100;
+        failAudio.play();
+        // return
       }
 
       const newSnakeCoords = this.props.snakeCoords;
@@ -159,6 +165,8 @@ class Canvas extends React.Component {
 
       // Feed Snake
       if (newElement.x === this.state.foodCoords.x && newElement.y === this.state.foodCoords.y) {
+        feedAudio.volume = this.props.soundVolume / 100;
+        feedAudio.play();
         this.setFoodCoords();
         this.drawFood();
         const score = this.props.score;
@@ -180,11 +188,15 @@ class Canvas extends React.Component {
       this.props.snakeCoords[0].x > boardSize - cellSize ||
       this.props.snakeCoords[0].y < 0 ||
       this.props.snakeCoords[0].y > boardSize - cellSize) {
+      failAudio.play();
+      failAudio.volume = this.props.soundVolume / 100;
       this.props.updateFail();
     }
     if (this.props.blocks) {
       this.props.blockCoords.forEach(el => {
         if (JSON.stringify(this.props.snakeCoords[0]) === JSON.stringify(el)) {
+          failAudio.volume = this.props.soundVolume / 100;
+          failAudio.play();
           this.props.updateFail();
         }
       });
@@ -282,8 +294,8 @@ Canvas.propTypes = {
   updateNewGame: PropTypes.func,
   blocks: PropTypes.bool,
   blockCoords: PropTypes.array,
-  scene: PropTypes.string
-
+  scene: PropTypes.string,
+  soundVolume: PropTypes.number,
 };
 
 export default Canvas;

@@ -2,11 +2,13 @@ import React from 'react';
 import Header from './Header'
 import Footer from './Footer'
 import Game from './Game'
+import '../style.css'
 
 class GameState extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      start: true,
       fail: false,
       pause: false,
       level: 'medium',
@@ -14,6 +16,8 @@ class GameState extends React.Component {
       scene: 'grass',
       direction: 'up',
       newGame: true,
+      soundVolume: 50,
+      musicVolume: 50,
     };
     this.updateLevel = this.updateLevel.bind(this);
     this.updateBlocksStatus = this.updateBlocksStatus.bind(this);
@@ -23,6 +27,16 @@ class GameState extends React.Component {
     this.updateDirection = this.updateDirection.bind(this);
     this.turnOffNewGameState = this.turnOffNewGameState.bind(this);
     this.turnOnNewGameState = this.turnOnNewGameState.bind(this);
+    this.updateSoundVolume = this.updateSoundVolume.bind(this);
+    this.updateMusicVolume = this.updateMusicVolume.bind(this);
+  }
+
+  updateSoundVolume = (value) => {
+    this.setState({ soundVolume: value })
+  }
+
+  updateMusicVolume = (value) => {
+    this.setState({ musicVolume: value })
   }
 
   updateLevel = (evt) => {
@@ -106,6 +120,7 @@ class GameState extends React.Component {
   }
 
   render() {
+    const isStart = this.state.start;
     return (
       <React.Fragment>
         <Header
@@ -115,22 +130,34 @@ class GameState extends React.Component {
           updateBlocksStatus={this.updateBlocksStatus}
           scene={this.state.scene}
           updateScene={this.updateScene}
+          musicVolume={this.state.musicVolume}
+          soundVolume={this.state.soundVolume}
+          updateMusicVolume={this.updateMusicVolume}
+          updateSoundVolume={this.updateSoundVolume}
         />
-        <Game
-          level={this.state.level}
-          fail={this.state.fail}
-          updateFail={this.updateFail}
-          pause={this.state.pause}
-          updatePause={this.updatePause}
-          blocks={this.state.blocks}
-          direction={this.state.direction}
-          updateDirection={this.updateDirection}
-          resetDirection={this.resetDirection}
-          newGame={this.state.newGame}
-          turnOffNewGameState={this.turnOffNewGameState}
-          turnOnNewGameState={this.turnOnNewGameState}
-          scene={this.state.scene}
-        />
+        {isStart ?
+          <div className="StartScreen">
+            <h2 className="StartScreen__title">WELCOME</h2>
+            <button onClick={() => this.setState({ start: false })}>Start Game</button>
+          </div> :
+          <Game
+            level={this.state.level}
+            fail={this.state.fail}
+            updateFail={this.updateFail}
+            pause={this.state.pause}
+            updatePause={this.updatePause}
+            blocks={this.state.blocks}
+            direction={this.state.direction}
+            updateDirection={this.updateDirection}
+            resetDirection={this.resetDirection}
+            newGame={this.state.newGame}
+            turnOffNewGameState={this.turnOffNewGameState}
+            turnOnNewGameState={this.turnOnNewGameState}
+            scene={this.state.scene}
+            soundVolume={this.state.soundVolume}
+            musicVolume={this.state.musicVolume}
+          />
+        }
         <Footer />
       </React.Fragment>
     );

@@ -37,13 +37,19 @@ class Header extends Component {
     super(props);
     this.state = {
       settingsOpen: false,
-      soundsOpen: false
+      soundSettingsOpen: false,
     };
-    this.updateSettingsOpen = this.updateSettingsOpen.bind(this)
+    this.updateSettingsOpen = this.updateSettingsOpen.bind(this);
+    this.updateSoundSettingsOpen = this.updateSoundSettingsOpen.bind(this);
+
   }
 
   updateSettingsOpen() {
     this.setState({ settingsOpen: !this.state.settingsOpen })
+  }
+
+  updateSoundSettingsOpen() {
+    this.setState({ soundSettingsOpen: !this.state.soundSettingsOpen })
   }
 
   render() {
@@ -54,7 +60,7 @@ class Header extends Component {
             <StyledIconButton onClick={this.updateSettingsOpen} edge="start" color="inherit" aria-label="Settings">
               <SettingsIcon />
             </StyledIconButton>
-            <IconButton edge="start" color="inherit" aria-label="MusicNote">
+            <IconButton onClick={this.updateSoundSettingsOpen} edge="start" color="inherit" aria-label="MusicNote">
               <MusicNoteIcon />
             </IconButton>
             <Title variant="h5">
@@ -71,12 +77,18 @@ class Header extends Component {
         <SettingsPanel
           settingsOpen={this.state.settingsOpen}
           updateSettingsOpen={this.updateSettingsOpen}
+          soundSettingsOpen={this.state.soundSettingsOpen}
+          updateSoundSettingsOpen={this.updateSoundSettingsOpen}
           level={this.props.level}
           updateLevel={this.props.updateLevel}
           blocks={this.props.blocks}
           updateBlocksStatus={this.props.updateBlocksStatus}
           scene={this.props.scene}
           updateScene={this.props.updateScene}
+          musicVolume={this.props.musicVolume}
+          soundVolume={this.props.soundVolume}
+          updateMusicVolume={this.props.updateMusicVolume}
+          updateSoundVolume={this.props.updateSoundVolume}
         />
       </StyledHeaderWrap>
     );
@@ -89,6 +101,11 @@ Header.propTypes = {
   updateBlocksStatus: PropTypes.func,
   scene: PropTypes.string,
   updateScene: PropTypes.func,
+  musicVolume: PropTypes.number,
+  soundVolume: PropTypes.number,
+  updateMusicVolume: PropTypes.func,
+  updateSoundVolume: PropTypes.func,
+
 };
 
 export default Header;

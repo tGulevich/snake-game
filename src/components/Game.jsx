@@ -5,6 +5,9 @@ import Canvas from './Canvas'
 import Score from './Score'
 import MouseControl from './MouseControl'
 import Popup from './Popup'
+import Music from '../assets/sounds/music.mp3'
+
+const musicAudio = new Audio(Music);
 
 const startCoords = {
   x: 250,
@@ -15,6 +18,7 @@ class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      // start: true,
       score: 0,
       snakeCoords:
         [
@@ -39,6 +43,7 @@ class Game extends React.Component {
   updateSnakeCoords = (coords) => {
     this.setState({ snakeCoords: coords })
   }
+
   resetSnakeCoords = () => {
     this.setState({
       snakeCoords: [
@@ -46,6 +51,7 @@ class Game extends React.Component {
       ]
     })
   }
+
   updateFoodCoords = (coords) => {
     this.setState({ foodCoords: coords })
   }
@@ -57,15 +63,26 @@ class Game extends React.Component {
     this.props.resetDirection();
   }
 
+  componentDidMount() {
+    window.addEventListener('keydown', this.keyDownHandler);
+    musicAudio.autoplay = true;
+    musicAudio.loop = true;
+    musicAudio.play();
+  }
+
+  componentDidUpdate() {
+    musicAudio.volume = this.props.musicVolume / 100;
+  }
+
   render() {
+    const background = `url('${this.props.scene}.jpg')`;
+
     const isPause = this.props.pause;
     const isFail = this.props.fail;
-    const background = `url('${this.props.scene}.jpg')`;
 
     return (
       <div className="wrapper" >
         <Score score={this.state.score} />
-
         <div className="gameBoard" style={{ backgroundImage: background }}>
           {isPause || isFail ?
             <Popup
@@ -96,6 +113,7 @@ class Game extends React.Component {
               blockCoords={this.state.blockCoords}
               newGame={this.props.newGame}
               scene={this.props.scene}
+              soundVolume={this.props.soundVolume}
             />
           }
         </div>
@@ -124,7 +142,9 @@ Game.propTypes = {
   newGame: PropTypes.bool,
   turnOffNewGameState: PropTypes.func,
   turnOnNewGameState: PropTypes.func,
-  scene: PropTypes.string
+  scene: PropTypes.string,
+  soundVolume: PropTypes.number,
+  musicVolume: PropTypes.number,
 };
 
 export default Game;

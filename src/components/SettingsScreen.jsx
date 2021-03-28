@@ -32,7 +32,6 @@ class SettingsScreen extends React.Component {
   }
 
   render() {
-    console.log(this.props.level)
     return (
       <SettingsWrap
         component={'form'}
