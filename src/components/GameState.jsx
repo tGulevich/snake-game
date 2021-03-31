@@ -11,13 +11,13 @@ class GameState extends React.Component {
       start: true,
       fail: false,
       pause: false,
-      level: 'medium',
-      blocks: true,
-      scene: 'grass',
+      level: localStorage.getItem('level') || 'medium',
+      blocks: JSON.parse(localStorage.getItem('blocks')) !== null ? JSON.parse(localStorage.getItem('blocks')) : true,
+      scene: localStorage.getItem('scene') || 'grass',
       direction: 'up',
       newGame: true,
-      soundVolume: 50,
-      musicVolume: 50,
+      soundVolume: JSON.parse(localStorage.getItem('soundVolume')) !== null ? JSON.parse(localStorage.getItem('soundVolume')) : 50,
+      musicVolume: JSON.parse(localStorage.getItem('musicVolume')) !== null ? JSON.parse(localStorage.getItem('musicVolume')) : 50,
     };
     this.updateLevel = this.updateLevel.bind(this);
     this.updateBlocksStatus = this.updateBlocksStatus.bind(this);
@@ -40,14 +40,17 @@ class GameState extends React.Component {
   }
 
   updateLevel = (evt) => {
+    localStorage.setItem('level', evt.target.value);
     this.setState({ level: evt.target.value })
   }
 
   updateBlocksStatus = () => {
+    localStorage.setItem('blocks', JSON.stringify(!this.state.blocks));
     this.setState({ blocks: !this.state.blocks })
   }
 
   updateScene = (evt) => {
+    localStorage.setItem('scene', evt.target.value);
     this.setState({ scene: evt.target.value })
   }
 
@@ -120,6 +123,7 @@ class GameState extends React.Component {
   }
 
   render() {
+    // console.log(localStorage.getItem('musicVolume'))
     const isStart = this.state.start;
     return (
       <React.Fragment>

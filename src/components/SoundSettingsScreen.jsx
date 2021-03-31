@@ -29,11 +29,14 @@ class SettingsScreen extends React.Component {
   }
 
   changeMusicVolumeHandler = (event, newValue) => {
+    localStorage.setItem('musicVolume', newValue);
     this.props.updateMusicVolume(newValue);
   }
 
   changeSoundVolumeHandler = (event, newValue) => {
+    localStorage.setItem('soundVolume', newValue);
     this.props.updateSoundVolume(newValue);
+
   }
 
   render() {
