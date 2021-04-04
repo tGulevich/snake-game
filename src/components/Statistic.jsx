@@ -38,7 +38,7 @@ export default function Statistic(props) {
           ))}
         </TableBody>
       </Table>
-      <button onClick={props.updateStatisticScreenStatus}>Return</button>
+      <button className='button' onClick={props.updateStatisticScreenStatus}>Return</button>
     </TableContainer>
   );
 }

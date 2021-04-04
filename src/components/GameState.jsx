@@ -224,7 +224,11 @@ class GameState extends React.Component {
           isStart ?
             <div className="StartScreen">
               <h2 className="StartScreen__title">WELCOME</h2>
-              <button onClick={() => this.setState({ start: false })}>Start Game</button>
+              <button
+                className='button'
+                onClick={() => this.setState({ start: false })}>
+                Start Game
+              </button>
             </div> :
             <Game
               snakeCoords={this.state.snakeCoords}

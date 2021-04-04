@@ -5,8 +5,10 @@ import '../style.css'
 export default function Popup(props) {
 
   function continueClickHandler() {
-    props.updatePause();
-    props.turnOffNewGameState();
+    if (!props.fail) {
+      props.updatePause();
+      props.turnOffNewGameState();
+    }
   }
 
   function newGameClickHandler() {
@@ -19,11 +21,22 @@ export default function Popup(props) {
     props.restartGame();
   }
 
+  let popupText;
+  if (props.pause && !props.fail) {
+    popupText = 'Pause';
+  } else if (props.fail) {
+    popupText = 'Fail';
+  }
+
   return (
     <div className="Popup">
-      <h2 className="Popup__title">POPUP</h2>
-      <button onClick={continueClickHandler}>Continue</button>
-      <button onClick={newGameClickHandler}>New Game</button>
+      <h2 className="Popup__title">{popupText}</h2>
+      <button
+        className={'button button__popup' + (props.fail ? ' button__popup_inactive' : '')}
+        onClick={continueClickHandler}>Continue</button>
+      <button
+        className={'button button__popup'}
+        onClick={newGameClickHandler}>New Game</button>
 
     </div>
   )
@@ -34,7 +47,6 @@ Popup.propTypes = {
   updatePause: PropTypes.func,
   fail: PropTypes.bool,
   updateFail: PropTypes.func,
-  // newGame: PropTypes.bool,
   turnOffNewGameState: PropTypes.func,
   turnOnNewGameState: PropTypes.func,
   updateScore: PropTypes.func,
