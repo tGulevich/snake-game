@@ -1,64 +1,24 @@
 import React from 'react'
 import PropTypes from 'prop-types';
-import '../style.css'
 import Canvas from './Canvas'
 import Score from './Score'
 import MouseControl from './MouseControl'
 import Popup from './Popup'
 import Music from '../assets/sounds/music.mp3'
+import '../style.css'
 
 const musicAudio = new Audio(Music);
-
-const startCoords = {
-  x: 250,
-  y: 250
-};
 
 class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // start: true,
-      score: 0,
-      snakeCoords:
-        [
-          startCoords
-        ],
-      foodCoords: {
-        x: 0,
-        y: 0
-      },
-      blockCoords: [{ x: 0, y: 0 }, { x: 0, y: 0 }],
     };
-    this.updateSnakeCoords = this.updateSnakeCoords.bind(this);
-    this.resetSnakeCoords = this.resetSnakeCoords.bind(this);
-    this.updateFoodCoords = this.updateFoodCoords.bind(this);
-    this.updateScore = this.updateScore.bind(this);
-  }
-
-  updateScore = (value) => {
-    this.setState({ score: value })
-  }
-
-  updateSnakeCoords = (coords) => {
-    this.setState({ snakeCoords: coords })
-  }
-
-  resetSnakeCoords = () => {
-    this.setState({
-      snakeCoords: [
-        startCoords
-      ]
-    })
-  }
-
-  updateFoodCoords = (coords) => {
-    this.setState({ foodCoords: coords })
   }
 
   restartGame = () => {
-    this.resetSnakeCoords();
-    this.updateScore(0);
+    this.props.resetSnakeCoords();
+    this.props.updateScore(0);
     this.props.turnOnNewGameState();
     this.props.resetDirection();
   }
@@ -76,13 +36,12 @@ class Game extends React.Component {
 
   render() {
     const background = `url('${this.props.scene}.jpg')`;
-
     const isPause = this.props.pause;
     const isFail = this.props.fail;
 
     return (
       <div className="wrapper" >
-        <Score score={this.state.score} />
+        <Score score={this.props.score} />
         <div className="gameBoard" style={{ backgroundImage: background }}>
           {isPause || isFail ?
             <Popup
@@ -92,12 +51,12 @@ class Game extends React.Component {
               updateFail={this.props.updateFail}
               turnOffNewGameState={this.props.turnOffNewGameState}
               turnOnNewGameState={this.props.turnOnNewGameState}
-              updateScore={this.updateScore}
+              updateScore={this.props.updateScore}
               restartGame={this.restartGame}
             />
             : <Canvas
-              score={this.state.score}
-              updateScore={this.updateScore}
+              score={this.props.score}
+              updateScore={this.props.updateScore}
               direction={this.props.direction}
               updateDirection={this.props.updateDirection}
               level={this.props.level}
@@ -106,14 +65,15 @@ class Game extends React.Component {
               fail={this.props.fail}
               updateFail={this.props.updateFail}
               blocks={this.props.blocks}
-              snakeCoords={this.state.snakeCoords}
-              updateSnakeCoords={this.updateSnakeCoords}
-              foodCoords={this.state.foodCoords}
-              updateFoodCoords={this.updateFoodCoords}
-              blockCoords={this.state.blockCoords}
+              snakeCoords={this.props.snakeCoords}
+              updateSnakeCoords={this.props.updateSnakeCoords}
+              foodCoords={this.props.foodCoords}
+              updateFoodCoords={this.props.updateFoodCoords}
+              blockCoords={this.props.blockCoords}
               newGame={this.props.newGame}
               scene={this.props.scene}
               soundVolume={this.props.soundVolume}
+              generateStatistic={this.props.generateStatistic}
             />
           }
         </div>
@@ -123,13 +83,21 @@ class Game extends React.Component {
           updateDirection={this.props.updateDirection}
           turnOffNewGameState={this.props.turnOffNewGameState}
           turnOnNewGameState={this.props.turnOnNewGameState}
-          updateScore={this.updateScore} />
+          updateScore={this.props.updateScore} />
       </div>
     )
   }
 }
 
 Game.propTypes = {
+  snakeCoords: PropTypes.array,
+  updateSnakeCoords: PropTypes.func,
+  resetSnakeCoords: PropTypes.func,
+  foodCoords: PropTypes.object,
+  updateFoodCoords: PropTypes.func,
+  blockCoords: PropTypes.array,
+  score: PropTypes.number,
+  updateScore: PropTypes.func,
   level: PropTypes.string,
   fail: PropTypes.bool,
   updateFail: PropTypes.func,
@@ -145,6 +113,10 @@ Game.propTypes = {
   scene: PropTypes.string,
   soundVolume: PropTypes.number,
   musicVolume: PropTypes.number,
+  generateStatistic: PropTypes.func,
+  statisticArr: PropTypes.array,
+  statisticScreenStatus: PropTypes.bool,
+  updateStatisticScreenStatus: PropTypes.func,
 };
 
 export default Game;

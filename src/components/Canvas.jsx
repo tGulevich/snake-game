@@ -155,9 +155,9 @@ class Canvas extends React.Component {
 
       if (this.checkSnakeCoordsMatch(newElement)) {
         this.props.updateFail();
+        this.props.generateStatistic();
         failAudio.volume = this.props.soundVolume / 100;
         failAudio.play();
-        // return
       }
 
       const newSnakeCoords = this.props.snakeCoords;
@@ -191,6 +191,7 @@ class Canvas extends React.Component {
       failAudio.play();
       failAudio.volume = this.props.soundVolume / 100;
       this.props.updateFail();
+      this.props.generateStatistic()
     }
     if (this.props.blocks) {
       this.props.blockCoords.forEach(el => {
@@ -198,6 +199,8 @@ class Canvas extends React.Component {
           failAudio.volume = this.props.soundVolume / 100;
           failAudio.play();
           this.props.updateFail();
+          this.props.generateStatistic();
+
         }
       });
     }
@@ -271,8 +274,8 @@ class Canvas extends React.Component {
       className="AppCanvas"
       ref={this.canvas}
       tabIndex={0}
-      width={boardSize} // !!!!!
-      height={boardSize} // !!!!!
+      width={boardSize}
+      height={boardSize}
     />
   }
 }
@@ -296,6 +299,7 @@ Canvas.propTypes = {
   blockCoords: PropTypes.array,
   scene: PropTypes.string,
   soundVolume: PropTypes.number,
+  generateStatistic: PropTypes.func
 };
 
 export default Canvas;

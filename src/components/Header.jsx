@@ -41,6 +41,7 @@ class Header extends Component {
     };
     this.updateSettingsOpen = this.updateSettingsOpen.bind(this);
     this.updateSoundSettingsOpen = this.updateSoundSettingsOpen.bind(this);
+    this.updateStatisticScreen = this.updateStatisticScreen.bind(this);
 
   }
 
@@ -51,6 +52,12 @@ class Header extends Component {
   updateSoundSettingsOpen() {
     this.setState({ soundSettingsOpen: !this.state.soundSettingsOpen })
   }
+
+  updateStatisticScreen() {
+    // this.props.updatePause();
+    this.props.updateStatisticScreenStatus();
+  }
+
 
   render() {
     return (
@@ -67,6 +74,7 @@ class Header extends Component {
               Snake Game
           </Title>
             <IconButton
+              onClick={this.updateStatisticScreen}
               aria-label="EmojiEvents"
               color="inherit"
             >
@@ -105,7 +113,8 @@ Header.propTypes = {
   soundVolume: PropTypes.number,
   updateMusicVolume: PropTypes.func,
   updateSoundVolume: PropTypes.func,
-
+  updateStatisticScreenStatus: PropTypes.func,
+  updatePause: PropTypes.func,
 };
 
 export default Header;

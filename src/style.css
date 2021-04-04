@@ -231,3 +231,39 @@ height: 40px;
   color: #fff;
   font-family: 'Roboto';
 }
+
+.StatisticScreen {
+  width: 600px !important;
+  height: 460px;
+  margin: auto;
+  padding: 10px 20px;
+  background-color: #6F7BD0;
+  border-radius: 5px;
+  border: 1px solid #565656;
+}
+
+/* !!!!Povtor */
+.StatisticScreen__title { 
+  /* margin: 30px 0;
+  margin-top: 50px; */
+  color: #fff;
+  font-family: 'Roboto';
+  text-align: center;
+}
+
+.StatisticScreen__table {
+  /* border: 1px solid #fff;
+  border-radius: 5px; */
+  /* color: rgb(238, 238, 238); */
+}
+
+.StatisticScreen__table .MuiTableCell-root {
+  color: rgb(238, 238, 238);
+  border: none;
+}
+
+.StatisticScreen .MuiTableCell-head {
+  background-color: #4C5BD0;
+  color: #fff;
+  font-weight: 700;
+}
